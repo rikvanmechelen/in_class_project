@@ -1,5 +1,5 @@
 const express = require('express')
-var handlebars = require('express-handlebars').create();
+const handlebars = require('express-handlebars').create();
 const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
