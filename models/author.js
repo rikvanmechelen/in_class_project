@@ -5,7 +5,25 @@ const authors = [
 ]
 
 exports.all = authors
+
 exports.add = (author) => {
   authors.push(author);
 }
+
+exports.get = (idx) => {
+  return authors[idx];
+}
+
+exports.update = (author) => {
+  authors[author.id] = author;
+}
+
+exports.upsert = (author) => {
+  if (author.id) {
+    exports.update(author);
+  } else {
+    exports.add(author);
+  }
+}
+
 
