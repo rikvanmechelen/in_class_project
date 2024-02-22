@@ -16,10 +16,10 @@
   </div>
   <div>
     <label for="author_ids">Author</label>
-    <select id="author_ids" name="authorId">
+    <select id="author_ids" multiple name="authorIds">
       <option disabled value>-- select author --</option>
       {{#each authors}}
-        <option value="{{@index}}" {{#if (and @root.book (eq @root.book.authorId @index))}}selected{{/if}}>
+        <option value="{{@index}}" {{#if (and @root.book (in @root.book.authorIds @index))}}selected{{/if}}>
           {{this.firstName}} {{this.lastName}}
         </option>
       {{/each}}
