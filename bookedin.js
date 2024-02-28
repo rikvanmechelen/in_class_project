@@ -7,6 +7,8 @@ const expressSession = require('express-session')
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
+const usersRouter = require('./routes/users');
+const genresRouter = require('./routes/genres');
 
 const app = express()
 const port = 3000
@@ -24,6 +26,11 @@ app.use(expressSession({
 app.use((req, res, next) => {
   res.locals.flash = req.session.flash
   delete req.session.flash
+  next()
+})
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.currentUser;
   next()
 })
 
@@ -58,6 +65,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', indexRouter);
 app.use('/authors', authorsRouter);
 app.use('/books', booksRouter);
+app.use('/users', usersRouter);
+app.use('/genres', genresRouter);
 
 
 // custom 404 page

@@ -3,3 +3,8 @@
   Written by {{#each authors}}{{this.firstName}} {{this.lastName}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/if}}
 <p>Published in {{book.publishingYear}}</p>
+</p>
+{{#if genre}}
+<p>
+  genre: {{genre.genre}}
+</p>
