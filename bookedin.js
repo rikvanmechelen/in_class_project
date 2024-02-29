@@ -3,6 +3,7 @@ const { credentials } = require('./config')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
+const csrf = require('csurf')
 
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
@@ -12,6 +13,8 @@ const genresRouter = require('./routes/genres');
 
 const app = express()
 const port = 3000
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cookieParser(credentials.cookieSecret));
 app.use(expressSession({
@@ -34,6 +37,13 @@ app.use((req, res, next) => {
   next()
 })
 
+// this must come after we link in body-parser,
+// cookie-parser, and express-session
+app.use(csrf({ cookie: true }))
+app.use((req, res, next) => {
+  res.locals._csrfToken = req.csrfToken()
+  next()
+})
 
 
 var handlebars = require('express-handlebars').create({
@@ -59,7 +69,6 @@ var handlebars = require('express-handlebars').create({
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.use(bodyParser.urlencoded({ extended: true }))
 
 /* GET home page. */
 app.use('/', indexRouter);
