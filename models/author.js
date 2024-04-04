@@ -13,23 +13,28 @@ exports.all = async () => {
 
 // exports.all = authors
 
-exports.add = (author) => {
-  authors.push(author);
+exports.add = async (author) => {
+  return await db.getPool()
+    .query("INSERT INTO authors(first_name, last_name) VALUES($1, $2) RETURNING *",
+    [author.firstName, author.lastName]);
 }
 
-exports.get = (idx) => {
-  return authors[idx];
+exports.get = async (id) => {
+  const { rows } = await db.getPool().query("select * from authors where id = $1", [id]);
+ return db.camelize(rows)[0];
 }
 
-exports.update = (author) => {
-  authors[author.id] = author;
+exports.update = async (author) => {
+  return await db.getPool()
+  .query("update authors set first_name = $1, last_name = $2) where id = $3 RETURNING *",
+  [author.firstName, author.lastName, author.id]);
 }
 
-exports.upsert = (author) => {
+exports.upsert = async (author) => {
   if (author.id) {
-    exports.update(author);
+    return exports.update(author);
   } else {
-    exports.add(author);
+    return exports.add(author);
   }
 }
 
