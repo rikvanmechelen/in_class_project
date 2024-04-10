@@ -4,7 +4,7 @@
   {{#if book}}
     <div>
       <h2>Editing: {{book.firstName}} {{book.lastName}}</h2>
-      <input type="hidden" id="id" name="id" value="{{bookIndex}}"
+      <input type="hidden" id="id" name="id" value="{{book.id}}"
     </div>
   {{/if}}
   <div>
@@ -20,7 +20,7 @@
     <select id="author_ids" multiple name="authorIds">
       <option disabled value>-- select author --</option>
       {{#each authors}}
-        <option value="{{@index}}" {{#if (and @root.book (in @root.book.authorIds @index))}}selected{{/if}}>
+        <option value="{{this.id}}" {{#if (and @root.book (in @root.book.authorIds this.id))}}selected{{/if}}>
           {{this.firstName}} {{this.lastName}}
         </option>
       {{/each}}
@@ -31,8 +31,8 @@
     <select name="genreId" id="genre_id">
       <option disabled value>-- select Genre --</option>
       {{#each genres}}
-        <option value="{{@index}}" {{#if (and @root.book (eq @root.book.genreId @index))}}selected{{/if}}>
-          {{this.genre}}
+        <option value="{{this.id}}" {{#if (and @root.book (eq @root.book.genreId this.id))}}selected{{/if}}>
+          {{this.name}}
         </option>
       {{/each}}
     </select>
